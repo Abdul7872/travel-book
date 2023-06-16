@@ -18,10 +18,10 @@ const Header = ({ history }) => {
     <header className="main-header">
       <Link to="/" className="logo">
         <span className="logo-mini">
-          <b>DG</b>
+          <b>BYJ</b>
         </span>
         <span className="logo-lg">
-          <b>Dhan</b>-gaadi
+          <b>Book</b>-your-journey
         </span>
       </Link>
       <nav className="navbar navbar-static-top">

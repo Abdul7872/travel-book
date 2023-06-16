@@ -223,7 +223,6 @@ class BusAvailable extends Component {
                 data-target="#add-user-modal"
                 onClick={() => this.props.history.push("/add-bus")}
               >
-                {" "}
                 Add Bus
               </button>
               <h1 className="mt-2 text-primary">All Available Buses</h1>
@@ -231,6 +230,7 @@ class BusAvailable extends Component {
                 <Loading />
               ) : (
                 <ReactDatatable
+                  key_column={"_id"}
                   config={this.config}
                   records={this.state.buses}
                   columns={this.columns}

@@ -4,12 +4,10 @@ const Footer = () => {
   return (
     <div className="box-footer">
       <div className="row">
-        <div>
-          <div className="description-block border-right">
-            <h5 className="description-header">
-              &copy; {new Date().getFullYear()} Dhan-gaadi
-            </h5>
-          </div>
+        <div className="description-block border-right">
+          <h5 className="description-header">
+            &copy; {new Date().getFullYear()} Book-your-journey
+          </h5>
         </div>
       </div>
     </div>

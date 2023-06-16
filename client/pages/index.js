@@ -3,9 +3,10 @@ import Head from "next/head";
 import Router from "next/router";
 import Layout from "../components/Layout";
 import Hero from "../components/Hero";
-import { Select, Button, Input, DatePicker } from "antd";
+import { Select, Button, Input, DatePicker, Form } from "antd";
 import moment from "moment";
 import { getAllLocations } from "../actions/location";
+import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -35,7 +36,7 @@ const Home = () => {
 
   const checkButtonDisabled = val => {
     threeLengthArray.push(val);
-    if(threeLengthArray.length >= 3){
+    if(threeLengthArray.length >= 2){
       setDisButton(false)
     }
   };
@@ -52,14 +53,17 @@ const Home = () => {
 
   const onChangeDate = val => {
     const journeyDate = val && moment(val._d).format("YYYY-MM-DD");
+    console.log(val, journeyDate)
     setFormData({ ...formData, ...{ journeyDate } });
-    checkButtonDisabled(val);
+    // checkButtonDisabled(val);
   };
 
-  const dummytransition = () => {
+  const dummyTransition = (val) => {
+    console.log({val})
+    val.journeyDate = moment(val.journeyDate).format("YYYY-MM-DD")
     Router.push({
       pathname: "/buses",
-      query: formData
+      query: val
     });
   };
 
@@ -86,76 +90,88 @@ const Home = () => {
           <div className="row">
             <div className="input-background">
               <h1 className="tag-line">Get Seat Go</h1>
-              <div className="route-form">
-                <label htmlFor="">
-                  <h4 className="color-white">From: </h4>
-                </label>
-                <Select
-                  showSearch
-                  placeholder="eg- Dhangadhi"
-                  style={{ width: 200, marginRight: "1rem" }}
-                  optionFilterProp="children"
-                  onChange={onChangeFrom}
-                  onFocus={onFocus}
-                  name="startLocation"
-                  onBlur={onBlur}
-                  onSearch={onSearch}
-                  filterOption={(input, option) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {locations.map(location => (
-                    <Option value={location._id} key={location._id}>
-                      {location.name}
-                    </Option>
-                  ))}
-                </Select>
-                <label htmlFor="">
-                  <h4 className="color-white">To: </h4>
-                </label>
-                <Select
-                  showSearch
-                  style={{ width: 200, marginRight: "1rem" }}
-                  placeholder="eg- Kathmandu"
-                  optionFilterProp="children"
-                  onChange={onChangeTo}
-                  name="endLocation"
-                  onFocus={onFocus}
-                  onBlur={onBlur}
-                  onSearch={onSearch}
-                  filterOption={(input, option) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {locations.map(location => (
-                    <Option value={location._id} key={location._id}>
-                      {location.name}
-                    </Option>
-                  ))}
-                </Select>
-                <label htmlFor="">
-                  <h4 className="color-white">Date: </h4>
-                </label>
-                <DatePicker
-                  style={{ width: "20%" }}
-                  format="YYYY-MM-DD"
-                  disabledDate={disabledDate}
-                  onChange={onChangeDate}
-                />
-                <Button
-                  type="primary"
-                  icon="search"
-                  style={{ marginLeft: "1rem" }}
-                  onClick={dummytransition}
-                  disabled={disButton}
-                >
-                  Search
-                </Button>
-              </div>
+                <Form className="route-form" name='travel-form' onFinish={dummyTransition}>
+                <div>
+                  <label htmlFor="">
+                    <h4 className="color-white">From: </h4>
+                  </label>
+                  <Form.Item rules={[ { required: true, message: 'Enter Boarding Location', } ]}  name='startLocation'>
+                    <Select
+                      showSearch
+                      placeholder="eg- Kolkata"
+                      style={{ width: 200, marginRight: "1rem" }}
+                      optionFilterProp="children"
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 }
+                    >
+                      {locations.map(location => (
+                        <Option value={location._id} key={location._id}>
+                          {location.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                </div>
+                
+                <div>
+                  <label htmlFor="">
+                    <h4 className="color-white">To: </h4>
+                  </label>
+                    <Form.Item rules={[ { required: true, message: 'Enter Destination Location', } ]} name='endLocation' >
+                    <Select
+                      showSearch
+                      style={{ width: 200, marginRight: "1rem" }}
+                      placeholder="eg- Delhi"
+                      optionFilterProp="children"
+                      // onChange={onChangeTo}
+                      // name="endLocation"
+                      // onFocus={onFocus}
+                      // onBlur={onBlur}
+                      // onSearch={onSearch}
+                      filterOption={(input, option) =>
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {locations.map(location => (
+                        <Option value={location._id} key={location._id}>
+                          {location.name}
+                        </Option>
+                      ))}
+                    </Select>
+                    </Form.Item>
+                  </div>
+
+                <div>
+                  <label htmlFor="">
+                    <h4 className="color-white">Date: </h4>
+                  </label>
+                  <Form.Item name='journeyDate' >
+                    <DatePicker
+                      style={{ width: 200, marginRight: "1rem" }}
+                      format="YYYY-MM-DD"
+                      disabledDate={disabledDate}
+                      onChange={onChangeDate}
+                    />
+                  </Form.Item>
+
+                </div>
+
+
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    icon={<SearchOutlined />}
+                    style={{ marginLeft: "1rem" }}
+                    // onClick={dummyTransition}
+                    // disabled={disButton}
+                  >
+                    Search
+                  </Button>
+                </Form.Item>
+              
+                </Form>
             </div>
           </div>
         </div>

@@ -22,7 +22,6 @@
 
 .input-background {
   background: rgba(0, 0, 0, 0.7);
-  height: 10rem;
   width: 60%;
   position: absolute;
   top: 33%;
@@ -41,8 +40,9 @@
 .route-form {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  margin: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 2rem;
 }
 
 label {

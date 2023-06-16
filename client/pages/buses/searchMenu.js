@@ -3,6 +3,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { getAllLocations } from "../../actions/location";
 import Router from "next/router";
+import { SearchOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
@@ -120,7 +121,7 @@ const SearchMenu = ({ buses, info }) => {
       />
       <Button
         type="primary"
-        icon="search"
+        icon={<SearchOutlined/>}
         style={{ marginLeft: "1rem" }}
         onClick={routeTransition}
       >
